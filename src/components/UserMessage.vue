@@ -106,7 +106,7 @@ const props = defineProps<Message & { reverse?: boolean, refs: string[] | null }
     display: flex;
   }
   &__text-block {
-    background-color: white;
+    background-color: $secondary;
     width: fit-content;
     margin: 0 16px;
     border-radius: 4px 24px 24px 4px;
@@ -149,12 +149,11 @@ const props = defineProps<Message & { reverse?: boolean, refs: string[] | null }
     margin: 8px 16px 0 8px;
     &__link{
       background-color: $secondary;
-      transition: background-color 0.35s ease;
       color:white;
       cursor: pointer;
       padding: 8px 12px;
       &:hover{
-        background-color: rgba(0, 102, 255, 0.9);
+        filter: brightness(110%);
       }
     }
   }

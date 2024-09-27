@@ -2,26 +2,26 @@
   <div class="login-wrapper">
     <div class="auth-card">
       <div class="auth-card__logo">
-        <img :src="svgLogo" style="width:70%" />
+        <svg-logo />
       </div>
       <div class="auth-card-body">
         <q-form @submit="loginUser()" ref="form" class="auth-card-form">
-          <q-input :error="loginError" v-model="login" :rules="loginRules" label="Логин" />
-          <q-input v-model="pass" :type="showPass?'text':'password'" :rules="passRules" label="Пароль">
+          <q-input dark color="accent" :error="loginError" v-model="login" :rules="loginRules" label="Логин" />
+          <q-input dark color="accent" v-model="pass" :type="showPass?'text':'password'" :rules="passRules" label="Пароль">
             <template #append>
               <q-btn @click="showPass = !showPass" round flat padding="2px" :icon="showPass?'visibility_off':'visibility'" />
             </template>
           </q-input>
         </q-form>
         <div class="auth-card-form-actions">
-          <q-checkbox v-model="remeber" density="comfortable" hide-details label="Запомнить меня" />
+          <q-checkbox color="red" keep-color v-model="remeber" density="comfortable" hide-details label="Запомнить меня" />
           <div class="auth-card-form-forgot-link">Забыли пароль?</div>
         </div>
         <div class="auth-card-form-action-btns">
-          <q-btn @click="loginGuest()" class="full-width shadow-1" unelevated color="accent" text-color="#222">
+          <q-btn @click="loginGuest()" class="full-width shadow-1" unelevated color="dark">
             Войти как гость
           </q-btn>
-          <q-btn @click="loginUser()" class="full-width q-mt-md" color="primary">
+          <q-btn @click="loginUser()" class="full-width q-mt-md" color="dark">
             Войти
           </q-btn>
         </div>
@@ -31,7 +31,7 @@
 </template>
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import svgLogo from 'assets/rustore-logo.svg'
+import svgLogo from 'assets/svg/rutube.svg'
 import { useUserStore } from 'stores/UserStore'
 import { useRouter } from 'vue-router'
 
@@ -97,6 +97,9 @@ onBeforeUnmount(() => {
 })
 </script>
 <style scoped lang="scss">
+:deep(.q-checkbox__bg){
+  color: red !important;
+}
 .login-wrapper {
   height: 100dvh;
   width: 100dvw;
@@ -111,7 +114,7 @@ onBeforeUnmount(() => {
     padding: 24px 30px 4px 30px;
     width: 440px;
     max-width: 90vw;
-    background-color: white;
+    background-color: var(--q-dark-page);
     &__logo{
       display: flex;
       justify-content: center;

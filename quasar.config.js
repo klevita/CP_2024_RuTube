@@ -7,8 +7,8 @@
 
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
-
 const { configure } = require('quasar/wrappers')
+const svgLoader = require('vite-svg-loader')
 const path = require('node:path')
 
 module.exports = configure(function (ctx) {
@@ -66,7 +66,7 @@ module.exports = configure(function (ctx) {
         stores: path.join(__dirname, './src/stores'),
         services: path.join(__dirname, './src/api/services'),
         shared: path.join(__dirname, './src/assets')
-      }
+      },
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
       // publicPath: '/',
@@ -78,12 +78,13 @@ module.exports = configure(function (ctx) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      extendViteConf (viteConf) {
+        viteConf.plugins.push(svgLoader())
+      },
       // viteVuePluginOptions: {},
 
-      // vitePlugins: [
-      //   [ 'package-name', { ..options.. } ]
-      // ]
+      vitePlugins: [
+      ]
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer

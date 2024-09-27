@@ -1,13 +1,16 @@
 <template>
   <q-list class="rooms" padding>
-    <div class="rooms__search">
-      <q-input filled class="q-mb-md q-mx-md" @focus="searchFocused=true" @blur="searchFocused=false" @mouseover="searchHovered = true" @mouseleave ="searchHovered = false" v-model="search" placeholder="Поиск" >
-        <template v-slot:append>
-          <q-icon :color="searchIconColor" name="search" />
-        </template>
-      </q-input>
+    <div class="rooms__search bg-dark">
+      <q-input class="q-mb-md q-mx-sm" label-color="white" bg-color="white" color="transparent" dense outlined hide-hint
+      @focus="searchFocused=true" @blur="searchFocused=false" @mouseover="searchHovered = true"
+      @mouseleave ="searchHovered = false" v-model="search"
+            placeholder="Поиск">
+            <template v-slot:append>
+              <q-icon :color="searchIconColor" name="search" />
+            </template>
+          </q-input>
     </div>
-    <q-item class="rooms__room" :class="{'rooms__room-selected': messageStore.currentRoomId === room.id}" @click="changeRoom(room.id)" clickable v-ripple="{color: 'primary'}" v-for="room in searchedRooms" :key="room.id">
+    <q-item class="rooms__room" :class="{'rooms__room-selected': messageStore.currentRoomId === room.id}" @click="changeRoom(room.id)" clickable v-ripple="{color: 'background2'}" v-for="room in searchedRooms" :key="room.id">
       {{ room.name }}
       <div class="column q-ml-sm items-center">
         <q-icon v-if="room.human_need" color="negative" class="q-mb-xs" size="20px" name="help_outline" />
@@ -47,12 +50,12 @@ const searchFocused = ref(false)
 
 const searchIconColor = computed(() => {
   if (searchFocused.value) {
-    return 'primary'
+    return 'accent'
   }
   if (searchHovered.value) {
     return 'black'
   }
-  return undefined
+  return 'grey-8'
 })
 
 onMounted(async () => {
@@ -73,10 +76,8 @@ async function handleDelete (id: number) {
 </script>
 <style scoped lang="scss">
 .rooms{
-  background-color:white;
   padding: 0px 8px;
   &__search {
-    background-color: white;
     position: sticky;
     top:0px;
     padding-top:16px;
@@ -90,7 +91,7 @@ async function handleDelete (id: number) {
     margin-right: 2px;
   }
   &__room-selected {
-    background-color: rgba(0, 119, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.208);
   }
 }
 </style>
