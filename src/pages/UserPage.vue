@@ -1,7 +1,6 @@
 <template>
   <div  class="index-page">
     <UserChat ref="chat" :searchedMessages="searchedMessages" class="index-page__chat" />
-
     <div class="index-page__input-wrapper">
       <UserInput @send="chat.scrollBottom()" v-model:extended="expanded" v-model="input" />
     </div>
