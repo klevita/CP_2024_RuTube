@@ -1,13 +1,16 @@
 import { useUserStore } from 'src/stores/UserStore'
 import { messageHttpClient } from '../MessagesHttpClient'
 import { Message, useMessageStore } from 'src/stores/MessageStore'
+import { StoreDefinition } from 'pinia'
 
 export interface Room {
   id: number;
   name: string;
-  human_need: boolean;
+  human_need: null | true;
+  main_room_id: null | number;
+  assistant_room_id: null | number,
+  kind: string
 }
-
 export interface Categories {
   answer: string;
   answer_class: number;
@@ -42,15 +45,15 @@ class MessageService {
     return response.data as Room[]
   }
 
-  static async sendMessage (text: string) {
+  static async sendMessage (text: string, useStore: StoreDefinition, LllmEnabled?:true) {
     const store = useUserStore()
-    const messageStore = useMessageStore()
+    const messageStore = useStore()
     const response = await messageHttpClient().post(
       `messages.json?username=${store.user.username}`,
       {
         text,
         room_id: messageStore.currentRoomId,
-        llm: store.user.username === 'admin' ? 'disabled' : undefined
+        llm: LllmEnabled ? undefined : 'disabled'
       }
     )
     return response

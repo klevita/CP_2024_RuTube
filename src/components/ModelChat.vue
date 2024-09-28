@@ -15,24 +15,24 @@
 <script setup lang="ts">
 import UserMessage from './UserMessage.vue'
 import UserMessageSkeleton from './UserMessageSkeleton.vue'
-import { Message, useMessageStore } from 'src/stores/MessageStore'
+import { Message } from 'src/stores/MessageStore'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { MessageService } from 'src/api/services/MessageService'
 import { useUserStore } from 'src/stores/UserStore'
 import { debounce } from 'quasar'
 import { useStorage } from '@vueuse/core'
 import { useSearchStore } from 'src/stores/searchStore'
-const currentRoomId = useStorage('currentRoom', -1)
+import { useModelMessageStore } from 'src/stores/ModelMessageStore'
+const currentRoomId = useStorage('currentRoomModel', -1)
 
 const userStore = useUserStore()
-const messageStore = useMessageStore()
+const messageStore = useModelMessageStore()
 
 const oldMessages = ref<Message[]>([])
 let oldMessagesOffset = 0
 const oldMessagesLoading = ref(false)
 
 const searchStore = useSearchStore()
-
 const messages = computed<Message[]>(() => {
   if (searchStore.searchedMessages.length) {
     return searchStore.searchedMessages

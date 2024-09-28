@@ -1,8 +1,8 @@
-import { useMessageStore } from './MessageStore'
+import { StoreDefinition } from 'pinia'
 import { useUserStore } from './UserStore'
 
-export function connect () {
-  const messageStore = useMessageStore()
+export function connect (useStore: StoreDefinition) {
+  const messageStore = useStore()
   const userStore = useUserStore()
   const ws = new WebSocket(`wss://${process.env.API}/cable?username=${userStore.user.username}`)
   ws.onopen = function () {
@@ -21,6 +21,7 @@ export function connect () {
     const resp = JSON.parse(e.data)
     if (resp.message && resp.message.kind) {
       if (resp.message.kind === 'new_message') {
+        console.log(messageStore.currentRoomId)
         if (resp.message.object.room_id === messageStore.currentRoomId) {
           messageStore.messages.push(resp.message.object)
         }
@@ -34,7 +35,7 @@ export function connect () {
   ws.onclose = function (e) {
     console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason)
     setTimeout(function () {
-      connect()
+      connect(useStore)
     }, 1000)
   }
 

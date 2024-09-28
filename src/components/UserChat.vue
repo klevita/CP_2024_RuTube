@@ -1,8 +1,5 @@
 <template>
   <div class="user-chat" ref="scrollContainer">
-    <div class="user-chat__scroll-item" v-if="lastMessageUser && !userStore.isAdmin" >
-      <UserMessageSkeleton />
-    </div>
     <div
       class="user-chat__scroll-item"
       v-for="message in messages"
@@ -14,7 +11,6 @@
 </template>
 <script setup lang="ts">
 import UserMessage from './UserMessage.vue'
-import UserMessageSkeleton from './UserMessageSkeleton.vue'
 import { Message, useMessageStore } from 'src/stores/MessageStore'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { MessageService } from 'src/api/services/MessageService'
@@ -38,10 +34,6 @@ const messages = computed<Message[]>(() => {
     return searchStore.searchedMessages
   }
   return [...[...messageStore.messages].reverse(), ...oldMessages.value]
-})
-
-const lastMessageUser = computed(() => {
-  return messages.value.at(0)?.user?.name !== 'admin' && messages.value.at(0)?.user?.name !== 'manager' && messages.value.length
 })
 
 const scrollContainer = ref<HTMLDivElement>()

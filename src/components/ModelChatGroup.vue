@@ -1,15 +1,15 @@
 <template>
   <div class="index-page">
-    <UserChat ref="chat" class="index-page__chat" />
+    <ModelChat ref="chat" class="index-page__chat" />
     <div class="index-page__input-wrapper">
-      <UserInput @send="chat.scrollBottom()" :store="useMessageStore" v-model:extended="expanded" v-model="input" />
+      <UserInput llm-enabled @send="chat.scrollBottom()" :store="useModelMessageStore" v-model:extended="expanded" v-model="input" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import UserChat from 'src/components/UserChat.vue'
+import ModelChat from './ModelChat.vue'
 import UserInput from 'src/components/UserInput.vue'
-import { useMessageStore } from 'src/stores/MessageStore'
+import { useModelMessageStore } from 'src/stores/ModelMessageStore'
 import { computed, ref } from 'vue'
 
 const chat = ref()
@@ -33,19 +33,19 @@ const chatPadding = computed(() => {
   flex-direction: column;
   &__chat{
     flex: 1 0 auto;
-    padding-right: 8px;
-    padding-left: 20px;
     width: 100%;
     transition: padding 0.55s ease;
+    padding-right: 12px;
+    padding-left: 18px;
     padding-bottom: v-bind(chatPadding)
   }
   &__input-wrapper {
-    @extend .background;
+    background-color: rgb(34, 34, 34);
     position: absolute;
-    border-radius: 1px;
+    border-radius: 1px 1px 0 0;
     bottom: 0;
-    width: calc(100% - 16px);
-    padding: 0 16px 24px 16px;
+    width: calc(100% - 17px);
+    padding: 0 12px 24px 12px;
     max-width: 1088px;
   }
 }

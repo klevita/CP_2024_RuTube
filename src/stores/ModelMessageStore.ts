@@ -15,7 +15,7 @@ export interface Message {
 }
 }
 
-export const useMessageStore = defineStore('messages', {
+export const useModelMessageStore = defineStore('modelMessages', {
   state: () => ({
     messages: [] as Message[],
     currentRoomId: -1 as null | number,
@@ -24,7 +24,7 @@ export const useMessageStore = defineStore('messages', {
   actions: {
     connect () {
       if (this.socket == null) {
-        this.socket = connect(useMessageStore)
+        this.socket = connect(useModelMessageStore)
       }
     },
     disconnect () {

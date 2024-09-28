@@ -10,7 +10,7 @@
             </template>
           </q-input>
     </div>
-    <q-item class="rooms__room" :class="{'rooms__room-selected': messageStore.currentRoomId === room.id}" @click="changeRoom(room.id)" clickable v-ripple="{color: 'background2'}" v-for="room in searchedRooms" :key="room.id">
+    <q-item class="rooms__room" :class="{'rooms__room-selected': messageStore.currentRoomId === room.id}" @click="changeRoom(room.id, room.assistant_room_id)" clickable v-ripple="{color: 'background2'}" v-for="room in searchedRooms" :key="room.id">
       {{ room.name }}
       <div class="column q-ml-sm items-center">
         <q-icon v-if="room.human_need" color="negative" class="q-mb-xs" size="20px" name="help_outline" />
@@ -24,10 +24,13 @@
 <script setup lang="ts">
 import { MessageService, Room } from 'src/api/services/MessageService'
 import { useMessageStore } from 'src/stores/MessageStore'
+import { useModelMessageStore } from 'src/stores/ModelMessageStore'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const messageStore = useMessageStore()
+const ModelMessageStore = useModelMessageStore()
+
 const rooms = ref<Room[]>([])
 const router = useRouter()
 const searchedRooms = computed(() => {
@@ -65,9 +68,14 @@ onMounted(async () => {
   }, 3000)
 })
 
-function changeRoom (id: number) {
+function changeRoom (id: number, modelId: number | null) {
   router.push({ name: 'User' })
   messageStore.changeRoom(id)
+  console.log(id)
+  console.log(modelId)
+  if (modelId) {
+    ModelMessageStore.changeRoom(modelId)
+  }
 }
 async function handleDelete (id: number) {
   await MessageService.deleteRoom(id)

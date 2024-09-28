@@ -21,7 +21,7 @@ onMounted(async () => {
   userStore.user.username = route.query.username?.slice(1) + ''
   await router.push({ name: 'User' })
   setTimeout(() => {
-    MessageService.sendMessage(text)
+    MessageService.sendMessage(text, useMessageStore)
   }, 300)
 })
 </script>

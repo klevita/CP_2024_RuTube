@@ -13,7 +13,7 @@
             </div>
           </div>
         <q-space />
-        <div class="absolute-center">
+        <div class="absolute-center" :style="Screen.width <= 700?{marginLeft: '-29px'}:''">
           <q-input label-color="white" bg-color="white" color="transparent" dense outlined hide-hint @focus="searchFocused = true" @blur="searchFocused = false"
               @mouseover="searchHovered = true" @mouseleave="searchHovered = false" v-model="search"
               placeholder="Поиск по сообщениям">
@@ -41,9 +41,7 @@
       <div class="absolute-right" style="z-index: 1;">
         <q-btn class="q-mr-md q-mt-sm" @click="chatOpened = false;" unelevated size="md" :icon="symRoundedClose" round />
       </div>
-      <div class="q-pa-md">
-        <model-chat />
-      </div>
+      <model-chat-group />
     </q-drawer>
     <q-page-container>
       <q-page class="background">
@@ -62,7 +60,7 @@ import { useRouter } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import { useSearchStore } from 'src/stores/searchStore'
 import { debounce, Screen } from 'quasar'
-import ModelChat from 'src/components/ModelChat.vue'
+import ModelChatGroup from 'src/components/ModelChatGroup.vue'
 
 const router = useRouter()
 const store = useUserStore()
@@ -90,10 +88,11 @@ const searchIconColor = computed(() => {
   return 'grey-8'
 })
 
-function handleClick () {
+async function handleClick () {
   messageStore.disconnect()
   store.logout()
-  router.push({ name: 'Login' })
+  await router.push({ name: 'Login' })
+  location.reload()
 }
 
 watch(() => store.user.username, (name) => {

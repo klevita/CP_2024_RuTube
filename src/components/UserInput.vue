@@ -7,7 +7,9 @@
     v-if="prompt"
     class="prompt"
   >
-    Возможно вы имели ввиду: {{ formattedSearch }}?
+    <a>
+      Возможно вы имели ввиду: {{ formattedSearch }}?
+    </a>
   </div>
   <div class="mark-editor-wrapper" :class="{'user-input-animated': !focused}">
     <MdEditor @keydown="keyPress" class='mark-editor-wrapper__editor' @focus="focused = true" :toolbars-exclude="['github', 'catalog', 'htmlPreview', 'preview', 'fullscreen', 'pageFullscreen', 'save', 'image', 'codeRow']" :preview="false" language="ru" v-model="model" />
@@ -59,7 +61,7 @@ import { computed, ref, watch } from 'vue'
 import { MdEditor, config } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import ru from '@vavt/cm-extension/dist/locale/ru'
-import { useUserStore } from 'src/stores/UserStore'
+import { StoreDefinition } from 'pinia'
 
 const focused = ref(false)
 
@@ -94,11 +96,14 @@ const emit = defineEmits(['update:modelValue', 'update:extended', 'send'])
 const props = defineProps<{
   modelValue: string;
   extended: boolean;
+  store: StoreDefinition;
+  llmEnabled?:true
 }>()
 
 async function send () {
   if (model.value) {
-    await MessageService.sendMessage(model.value)
+    console.log(props.store())
+    await MessageService.sendMessage(model.value, props.store, props.llmEnabled)
     emit('send')
     setTimeout(() => {
       model.value = ''
@@ -175,9 +180,11 @@ watch(model, (v: string) => {
   :deep(.md-editor-icon){
     fill: black !important;
   }
+
   :deep(.q-icon){
     fill: $secondary;
   }
+
   overflow: auto !important;
   border-radius: 16px;
   &__editor{
@@ -203,7 +210,7 @@ watch(model, (v: string) => {
   &__btn-expand {
     position: absolute;
     right: 84px;
-    top: 30px;
+    top: 6px;
   }
 }
 
@@ -227,10 +234,12 @@ watch(model, (v: string) => {
 
 .prompt {
   position: absolute;
-  top: 2px;
-  left: 40px;
+  top: -28px;
+  left: 24px;
+  background-color: $secondary;
+  border-radius: 12px;
+  padding: 2px 6px 2px 6px;
   cursor: pointer;
-  color: rgb(41, 41, 255);
   &:hover {
     text-decoration: underline;
   }
