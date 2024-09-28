@@ -54,7 +54,7 @@ module.exports = configure(function (ctx) {
         node: 'node16'
       },
       env: {
-        API: 'rustore-api.kovalev.team'
+        API: 'rutube-copilot-api.kovalev.team'
       },
       vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,

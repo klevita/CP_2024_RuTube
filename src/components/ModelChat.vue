@@ -73,17 +73,21 @@ watch(() => messageStore.currentRoomId, (v) => {
   currentRoomId.value = v
   oldMessagesOffset = 0
   oldMessages.value = []
-  fetchMessages()
-})
-onMounted(() => {
   if (messageStore.currentRoomId === -1 && currentRoomId.value !== -1) {
     messageStore.currentRoomId = currentRoomId.value
   }
+  fetchMessages()
+})
+onMounted(() => {
   messageStore.connect()
+  if (messageStore.currentRoomId === -1 && currentRoomId.value !== -1) {
+    messageStore.currentRoomId = currentRoomId.value
+  }
   fetchMessages()
   if (scrollContainer.value) {
     scrollContainer.value.addEventListener('scroll', listenScroll)
   }
+  scrollBottom()
 })
 onBeforeUnmount(() => {
   scrollContainer.value?.removeEventListener('scroll', listenScroll)

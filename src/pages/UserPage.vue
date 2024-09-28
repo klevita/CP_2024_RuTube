@@ -1,25 +1,17 @@
 <template>
   <div  class="index-page">
-    <UserChat ref="chat" :searchedMessages="searchedMessages" class="index-page__chat" />
+    <UserChat ref="chat" class="index-page__chat" />
     <div class="index-page__input-wrapper">
       <UserInput @send="chat.scrollBottom()" v-model:extended="expanded" v-model="input" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { MessageService } from 'src/api/services/MessageService'
 import UserChat from 'src/components/UserChat.vue'
 import UserInput from 'src/components/UserInput.vue'
-import { Message, useMessageStore } from 'src/stores/MessageStore'
-import { useSearchStore } from 'src/stores/searchStore'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 
 const chat = ref()
-
-const searchStore = useSearchStore()
-const messageStore = useMessageStore()
-
-const searchedMessages = ref<Message[]>([])
 
 const expanded = ref(false)
 const input = ref('')
@@ -28,18 +20,6 @@ const chatPadding = computed(() => {
     return '448px'
   }
   return '156px'
-})
-watch(() => searchStore.search, async (v) => {
-  if (!v) {
-    searchedMessages.value = []
-    return
-  }
-  const resp = await MessageService.searchMessages(v)
-  if (resp) {
-    searchedMessages.value = resp
-  } else {
-    searchedMessages.value = []
-  }
 })
 </script>
 <style scoped lang="scss">
@@ -63,7 +43,7 @@ watch(() => searchStore.search, async (v) => {
     bottom: 0;
     width: 100%;
     padding: 24px 16px 24px 16px;
-    max-width: 1024px;
+    max-width: 1088px;
   }
 }
 </style>

@@ -8,26 +8,24 @@
             <q-icon :name="symRoundedMenu" size="28px" />
           </q-btn>
           <div v-else style="width:48px"></div>
-          <div class="logo">
+          <div v-if="Screen.width > 700" class="logo">
             <svg-logo />
           </div>
-
         </div>
         <q-space />
-        <div class="absolute-center">
-          <q-input label-color="white" bg-color="white" color="transparent" dense outlined hide-hint @focus="searchFocused = true" @blur="searchFocused = false"
+        <q-input label-color="white" bg-color="white" color="transparent" dense outlined hide-hint @focus="searchFocused = true" @blur="searchFocused = false"
             @mouseover="searchHovered = true" @mouseleave="searchHovered = false" v-model="search"
             placeholder="Поиск по сообщениям">
             <template v-slot:append>
               <q-icon :color="searchIconColor" name="search" />
             </template>
-          </q-input>
-        </div>
+        </q-input>
         <q-space />
         <div class="row items-center">
-          <div class="text-dark text-subtitle1 q-mr-sm">
-            {{ store.user.username }}
-          </div>
+          <q-btn @click="chatOpened = !chatOpened" v-if="store.user.username === 'admin'" class="q-mr-md"
+            color="white" padding="xs" flat>
+            <q-icon :name="symRoundedNeurology" size="28px" />
+          </q-btn>
           <q-btn @click="handleClick()" flat round color="primary" size="md" icon="logout" />
         </div>
       </q-toolbar>
@@ -36,6 +34,12 @@
       <q-scroll-area class="fit" >
         <UserRooms v-if="store.user.username === 'admin'" />
       </q-scroll-area>
+    </q-drawer>
+    <q-drawer v-model="chatOpened" :width="Screen.width > 800? 800: Screen.width" class="bg-dark" side="right" size="right" overlay elevated :breakpoint="700">
+      <div class="absolute-right" style="z-index: 1;">
+        <q-btn @click="chatOpened = false;" unelevated size="md" :icon="symRoundedClose" round />
+      </div>
+      <model-chat />
     </q-drawer>
     <q-page-container>
       <q-page class="background">
@@ -46,19 +50,22 @@
 </template>
 <script setup lang="ts">
 import { useMessageStore } from 'src/stores/MessageStore'
+import { symRoundedNeurology, symRoundedMenu, symRoundedClose } from '@quasar/extras/material-symbols-rounded'
 import svgLogo from 'assets/svg/rutube.svg'
 import { useUserStore } from 'src/stores/UserStore'
 import UserRooms from 'src/components/UserRooms.vue'
-import { symRoundedMenu } from '@quasar/extras/material-symbols-rounded'
 import { useRouter } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import { useSearchStore } from 'src/stores/searchStore'
-import { debounce } from 'quasar'
+import { debounce, Screen } from 'quasar'
+import ModelChat from 'src/components/ModelChat.vue'
 
 const router = useRouter()
 const store = useUserStore()
 const messageStore = useMessageStore()
 const drawerOpened = ref(true)
+
+const chatOpened = ref(false)
 
 const searchStore = useSearchStore()
 const search = ref('')
@@ -66,7 +73,7 @@ const searchHovered = ref(false)
 const searchFocused = ref(false)
 
 const setSearch = debounce(function (v) {
-  searchStore.search = v
+  searchStore.setSearch(v)
 }, 500)
 
 const searchIconColor = computed(() => {

@@ -58,6 +58,7 @@ class MessageService {
   static async getMessages (offset: number, limit = 20) {
     const store = useUserStore()
     const messageStore = useMessageStore()
+    console.log(`messages.json?username=${store.user.username}&room_id=${messageStore.getRoomId}&offset=${offset}&limit=${limit}`)
     const response = await messageHttpClient().get(
       `messages.json?username=${store.user.username}&room_id=${messageStore.getRoomId}&offset=${offset}&limit=${limit}`
     )

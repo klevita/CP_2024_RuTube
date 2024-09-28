@@ -24,7 +24,7 @@
           :class="{'rotate-180': extended}"
           size="24px"
           class="mark-editor-wrapper__btn-expand__icon"
-        ></q-icon>
+        />
     </q-btn>
     <transition
       appear
@@ -45,7 +45,7 @@
           :name="symRoundedSend"
           size="30px"
           class="mark-editor-wrapper__btn__icon"
-        ></q-icon>
+        />
       </q-btn>
     </transition>
   </div>
@@ -171,6 +171,9 @@ watch(model, (v: string) => {
 @import "../css/quasar.variables.scss";
 
 .mark-editor-wrapper{
+  :deep(.md-editor-icon){
+    fill: black;
+  }
   overflow: auto !important;
   border-radius: 16px;
   &__editor{

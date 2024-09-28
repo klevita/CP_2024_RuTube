@@ -2,8 +2,7 @@
   <div class="user-message" :class="{ reverse: reverse }">
     <div :class="{ reverse: reverse }">
       <q-icon
-        class="user-message__avatar"
-        :color="reverse ? 'secondary' : 'primary'"
+        color="rgb(210, 210, 210)"
         :name="
           props.user.name !== 'admin' ? 'person_outline' : symRoundedNeurology
         "
@@ -34,7 +33,7 @@
           </div>
         </div>
         <div class="user-message__links q-gutter-sm" :style="{justifyContent: reverse?'end':'start'}">
-          <div v-for="ref in props.refs" @click="handleRefClick(JSON.parse(ref).url)" :key="ref" class="user-message__links__link relative-position" v-ripple="{ color: 'blue-3' }" :style="{ borderRadius: reverse?'48px 10px 48px 48px':'10px 48px 48px 48px'}">
+          <div v-for="ref in props.refs" @click="handleRefClick(JSON.parse(ref).url)" :key="ref" class="user-message__links__link relative-position" v-ripple="{ color: 'blue-3' }" :style="{ borderRadius: reverse?'24px 6px 24px 24px':'6px 24px 24px 24px'}">
             {{ parseRef(ref).name }}
           </div>
         </div>
@@ -98,19 +97,26 @@ onMounted(() => {
 const props = defineProps<Message & { reverse?: boolean, refs: string[] | null }>()
 </script>
 <style scoped lang="scss">
+:deep(blockquote){
+  background-color: $dark-page;
+}
 .user-message {
   display: flex;
-  width: 100%;
   position: relative;
+  width: 100%;
+  padding-right: 56px;
+  & * {
+    max-width: 100%;
+  }
   & > :first-child {
     display: flex;
   }
   &__text-block {
     background-color: $secondary;
-    width: fit-content;
     margin: 0 16px;
-    border-radius: 4px 24px 24px 4px;
+    border-radius: 4px 16px 16px 4px;
     padding: 8px 16px 12px 16px;
+
     &__name {
       font-size: 18px;
       color: $primary;
@@ -160,11 +166,14 @@ const props = defineProps<Message & { reverse?: boolean, refs: string[] | null }
 }
 .reverse {
   flex-direction: row-reverse;
+  padding-right: 0;
+  padding-left: 56px;
   & .user-message__text-block{
-    border-radius: 24px 4px 4px 24px;
+    border-radius: 16px 4px 4px 16px;
   }
 }
 .reverse-color {
-  background-color: rgb(227, 237, 255);
+  background-color: $secondary;
 }
+
 </style>
