@@ -49,7 +49,8 @@ class MessageService {
       `messages.json?username=${store.user.username}`,
       {
         text,
-        room_id: messageStore.currentRoomId
+        room_id: messageStore.currentRoomId,
+        llm: store.user.username === 'admin' ? 'disabled' : undefined
       }
     )
     return response

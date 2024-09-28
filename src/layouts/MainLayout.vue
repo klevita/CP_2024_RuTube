@@ -8,18 +8,20 @@
             <q-icon :name="symRoundedMenu" size="28px" />
           </q-btn>
           <div v-else style="width:48px"></div>
-          <div v-if="Screen.width > 700" class="logo">
-            <svg-logo />
+            <div v-if="Screen.width > 700" class="logo">
+              <svg-logo />
+            </div>
           </div>
-        </div>
         <q-space />
-        <q-input label-color="white" bg-color="white" color="transparent" dense outlined hide-hint @focus="searchFocused = true" @blur="searchFocused = false"
-            @mouseover="searchHovered = true" @mouseleave="searchHovered = false" v-model="search"
-            placeholder="Поиск по сообщениям">
-            <template v-slot:append>
-              <q-icon :color="searchIconColor" name="search" />
-            </template>
-        </q-input>
+        <div class="absolute-center">
+          <q-input label-color="white" bg-color="white" color="transparent" dense outlined hide-hint @focus="searchFocused = true" @blur="searchFocused = false"
+              @mouseover="searchHovered = true" @mouseleave="searchHovered = false" v-model="search"
+              placeholder="Поиск по сообщениям">
+              <template v-slot:append>
+                <q-icon :color="searchIconColor" name="search" />
+              </template>
+          </q-input>
+        </div>
         <q-space />
         <div class="row items-center">
           <q-btn @click="chatOpened = !chatOpened" v-if="store.user.username === 'admin'" class="q-mr-md"
@@ -35,11 +37,13 @@
         <UserRooms v-if="store.user.username === 'admin'" />
       </q-scroll-area>
     </q-drawer>
-    <q-drawer v-model="chatOpened" :width="Screen.width > 800? 800: Screen.width" class="bg-dark" side="right" size="right" overlay elevated :breakpoint="700">
+    <q-drawer v-model="chatOpened" :width="Screen.width > 800? 800: Screen.width" class="bg-dark" side="right" size="right" :overlay="Screen.width < 1200" elevated :breakpoint="700">
       <div class="absolute-right" style="z-index: 1;">
-        <q-btn @click="chatOpened = false;" unelevated size="md" :icon="symRoundedClose" round />
+        <q-btn class="q-mr-md q-mt-sm" @click="chatOpened = false;" unelevated size="md" :icon="symRoundedClose" round />
       </div>
-      <model-chat />
+      <div class="q-pa-md">
+        <model-chat />
+      </div>
     </q-drawer>
     <q-page-container>
       <q-page class="background">

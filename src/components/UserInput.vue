@@ -37,7 +37,7 @@
         v-show="model.trim().length"
         flat
         rounded
-        color="primary"
+        color="secondary"
         class="mark-editor-wrapper__btn"
         padding="5px 6px 7px 6px"
       >
@@ -59,6 +59,7 @@ import { computed, ref, watch } from 'vue'
 import { MdEditor, config } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import ru from '@vavt/cm-extension/dist/locale/ru'
+import { useUserStore } from 'src/stores/UserStore'
 
 const focused = ref(false)
 
@@ -172,7 +173,10 @@ watch(model, (v: string) => {
 
 .mark-editor-wrapper{
   :deep(.md-editor-icon){
-    fill: black;
+    fill: black !important;
+  }
+  :deep(.q-icon){
+    fill: $secondary;
   }
   overflow: auto !important;
   border-radius: 16px;
@@ -201,6 +205,10 @@ watch(model, (v: string) => {
     right: 84px;
     top: 30px;
   }
+}
+
+:deep(.cm-content *){
+  color: black !important;
 }
 
 .user-input {
