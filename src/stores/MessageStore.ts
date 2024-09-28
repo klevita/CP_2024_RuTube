@@ -36,6 +36,9 @@ export const useMessageStore = defineStore('messages', {
         this.messages = []
       }
     },
+    addMessage (newMessage: Message) {
+      this.messages.push(newMessage)
+    },
     changeRoom (id: number) {
       this.messages = []
       this.currentRoomId = id

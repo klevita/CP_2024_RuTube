@@ -55,7 +55,7 @@ function listenScroll () {
 const fetchMessages = debounce(async function () {
   if (!oldMessagesLoading.value) {
     oldMessagesLoading.value = true
-    oldMessages.value = [...oldMessages.value, ...(await MessageService.getMessages(oldMessagesOffset))]
+    oldMessages.value = [...oldMessages.value, ...(await MessageService.getMessages(oldMessagesOffset, useMessageStore))]
     oldMessagesOffset += 20
     oldMessagesLoading.value = false
   }

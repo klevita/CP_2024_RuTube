@@ -63,7 +63,7 @@ function listenScroll () {
 const fetchMessages = debounce(async function () {
   if (!oldMessagesLoading.value) {
     oldMessagesLoading.value = true
-    oldMessages.value = [...oldMessages.value, ...(await MessageService.getMessages(oldMessagesOffset))]
+    oldMessages.value = [...oldMessages.value, ...(await MessageService.getMessages(oldMessagesOffset, useModelMessageStore))]
     oldMessagesOffset += 20
     oldMessagesLoading.value = false
   }
@@ -79,10 +79,10 @@ watch(() => messageStore.currentRoomId, (v) => {
   fetchMessages()
 })
 onMounted(() => {
-  messageStore.connect()
   if (messageStore.currentRoomId === -1 && currentRoomId.value !== -1) {
     messageStore.currentRoomId = currentRoomId.value
   }
+  messageStore.connect()
   fetchMessages()
   if (scrollContainer.value) {
     scrollContainer.value.addEventListener('scroll', listenScroll)
