@@ -100,6 +100,9 @@ const props = defineProps<Message & { reverse?: boolean, refs: string[] | null }
 :deep(blockquote){
   background-color: $dark-page;
 }
+:deep(code){
+  max-width: calc(100% - 49px);
+}
 .user-message {
   display: flex;
   position: relative;

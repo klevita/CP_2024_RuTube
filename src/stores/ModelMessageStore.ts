@@ -36,6 +36,14 @@ export const useModelMessageStore = defineStore('modelMessages', {
         this.messages = []
       }
     },
+    addMessage (newMessage: Message) {
+      const message = this.messages.find((message) => message.id === newMessage.id)
+      if (message) {
+        message.text = newMessage.text
+      } else {
+        this.messages.push(newMessage)
+      }
+    },
     changeRoom (id: number) {
       this.messages = []
       this.currentRoomId = id

@@ -71,8 +71,6 @@ onMounted(async () => {
 function changeRoom (id: number, modelId: number | null) {
   router.push({ name: 'User' })
   messageStore.changeRoom(id)
-  console.log(id)
-  console.log(modelId)
   if (modelId) {
     ModelMessageStore.changeRoom(modelId)
   }

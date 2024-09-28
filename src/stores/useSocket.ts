@@ -21,9 +21,8 @@ export function connect (useStore: StoreDefinition) {
     const resp = JSON.parse(e.data)
     if (resp.message && resp.message.kind) {
       if (resp.message.kind === 'new_message') {
-        console.log(messageStore.currentRoomId)
         if (resp.message.object.room_id === messageStore.currentRoomId) {
-          messageStore.messages.push(resp.message.object)
+          messageStore.addMessage(resp.message.object)
         }
       }
       if (resp.message.kind === 'room_id') {
@@ -33,7 +32,6 @@ export function connect (useStore: StoreDefinition) {
   }
 
   ws.onclose = function (e) {
-    console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason)
     setTimeout(function () {
       connect(useStore)
     }, 1000)

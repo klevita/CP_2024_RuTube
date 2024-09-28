@@ -102,7 +102,6 @@ const props = defineProps<{
 
 async function send () {
   if (model.value) {
-    console.log(props.store())
     await MessageService.sendMessage(model.value, props.store, props.llmEnabled)
     emit('send')
     setTimeout(() => {
