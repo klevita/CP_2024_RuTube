@@ -37,7 +37,7 @@
         <UserRooms v-if="store.user.username === 'admin'" />
       </q-scroll-area>
     </q-drawer>
-    <q-drawer v-model="chatOpened" :width="Screen.width > 800? 800: Screen.width" class="bg-dark" side="right" size="right" :overlay="Screen.width < 1200" elevated :breakpoint="700">
+    <q-drawer v-model="chatOpened" :width="Screen.width > 800? 800: Screen.width" class="bg-dark" side="right" :overlay="Screen.width < 1200" elevated :breakpoint="700">
       <div class="absolute-right" style="z-index: 1;">
         <q-btn class="q-mr-md q-mt-sm" @click="chatOpened = false;" unelevated size="md" :icon="symRoundedClose" round />
       </div>

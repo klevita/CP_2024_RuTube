@@ -13,9 +13,6 @@
           <q-btn :flat="!like" class="q-mb-xs" dense round color="positive" @click="like=!like; dislike = false">
             <q-icon size="24px" :name="symRoundedThumbUp" />
           </q-btn>
-          <q-btn :flat="!dislike" dense round color="negative" @click="dislike=!dislike; like=false">
-            <q-icon size="24px" :name="symRoundedThumbDown" />
-          </q-btn>
         </template>
         <q-btn v-if="props.user.name==='llm'" :icon="symRoundedCopyAll" round dense size="md" class="q-mt-sm" flat @click="copyText()" />
       </div>
@@ -36,8 +33,12 @@
           </div>
         </div>
         <div class="user-message__links q-gutter-sm" :style="{justifyContent: reverse?'end':'start'}">
-          <div v-for="ref in props.refs" @click="handleRefClick(JSON.parse(ref).url)" :key="ref" class="user-message__links__link relative-position" v-ripple="{ color: 'blue-3' }" :style="{ borderRadius: reverse?'24px 6px 24px 24px':'6px 24px 24px 24px'}">
-            {{ parseRef(ref).name }}
+
+          <div v-for="ref in props.refs" :key="ref" class="row no-wrap items-center">
+            <q-btn :ripple="false" :icon="symRoundedCopyAll" round dense size="md" flat @click="copyText(parseRef(ref).name)" />
+            <div @click="handleRefClick(JSON.parse(ref).url)"  class="user-message__links__link relative-position" v-ripple="{ color: 'blue-3' }" :style="{ borderRadius: reverse?'24px 6px 24px 24px':'6px 24px 24px 24px'}">
+              {{ parseRef(ref).name }}
+            </div>
           </div>
         </div>
       </div>
@@ -45,7 +46,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { symRoundedSupportAgent, symRoundedNeurology, symRoundedPerson, symRoundedThumbUp, symRoundedThumbDown, symRoundedCopyAll } from '@quasar/extras/material-symbols-rounded'
+import { symRoundedSupportAgent, symRoundedNeurology, symRoundedPerson, symRoundedThumbUp, symRoundedCopyAll } from '@quasar/extras/material-symbols-rounded'
 import { Message } from 'src/stores/MessageStore'
 import { MdPreview, config } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
@@ -75,7 +76,6 @@ config({
 })
 
 const userStore = useUserStore()
-const emit = defineEmits(['textCopy'])
 
 const like = ref(false)
 const dislike = ref(false)
@@ -100,9 +100,9 @@ function handleRefClick (url: string) {
   window.open(url, '_blank')
 }
 
-function copyText () {
+function copyText (text?:string) {
   navigator.clipboard.writeText(props.text)
-  textStore.copyText = props.text
+  textStore.copyText = text || props.text
 }
 
 onMounted(() => {

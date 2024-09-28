@@ -12,7 +12,7 @@
     </a>
   </div>
   <div class="mark-editor-wrapper" :class="{'user-input-animated': !focused}">
-    <MdEditor @keydown="keyPress" class='mark-editor-wrapper__editor' @focus="focused = true" :toolbars-exclude="['github', 'catalog', 'htmlPreview', 'preview', 'fullscreen', 'pageFullscreen', 'save', 'image', 'codeRow']" :preview="false" language="ru" v-model="model" />
+    <MdEditor :placeholder="chatMessage" @keydown="keyPress" class='mark-editor-wrapper__editor' @focus="focused = true" :toolbars-exclude="['github', 'catalog', 'htmlPreview', 'preview', 'fullscreen', 'pageFullscreen', 'save', 'image', 'codeRow']" :preview="false" language="ru" v-model="model" />
     <q-btn
         ref="btn"
         @click="extended = !extended"
@@ -82,6 +82,13 @@ const extended = computed({
   set (v: string) {
     emit('update:extended', v)
   }
+})
+
+const chatMessage = computed(() => {
+  if (isNotLlmChat()) {
+    return 'Чат с пользователем'
+  }
+  return 'Чат с ботом'
 })
 
 config({
@@ -158,6 +165,9 @@ const keyPress = (k: KeyboardEvent) => {
     send()
   }
 }
+function isNotLlmChat () {
+  return store.$id === 'messages'
+}
 
 const debouncedSearch = debounce(searchHandle, 400)
 
@@ -169,7 +179,7 @@ const inputHeight = computed(() => {
 })
 
 watch(() => textStore.copyText, () => {
-  if (store.$id === 'messages') {
+  if (isNotLlmChat()) {
     const text = textStore.getText
     if (text) {
       model.value = text
@@ -227,6 +237,10 @@ watch(model, (v: string) => {
 
 :deep(.cm-content *){
   color: black !important;
+}
+:deep(.cm-placeholder){
+  font-size: 20px;
+  color: rgb(115, 115, 115) !important;
 }
 
 .user-input {
