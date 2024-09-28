@@ -159,6 +159,9 @@ const props = defineProps<Message & { reverse?: boolean, refs: string[] | null }
     &__link{
       background-color: $secondary;
       color:white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       cursor: pointer;
       padding: 8px 12px;
       &:hover{

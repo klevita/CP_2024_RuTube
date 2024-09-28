@@ -199,7 +199,7 @@ watch(model, (v: string) => {
   &__btn {
     position: absolute;
     right: 28px;
-    top: 67px;
+    top: 40px;
     &__icon {
       position: relative;
       top: 2px;

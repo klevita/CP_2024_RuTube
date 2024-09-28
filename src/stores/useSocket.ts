@@ -31,7 +31,7 @@ export function connect (useStore: StoreDefinition) {
     }
   }
 
-  ws.onclose = function (e) {
+  ws.onclose = function () {
     setTimeout(function () {
       connect(useStore)
     }, 1000)

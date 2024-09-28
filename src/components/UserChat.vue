@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import UserMessage from './UserMessage.vue'
 import { Message, useMessageStore } from 'src/stores/MessageStore'
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { MessageService } from 'src/api/services/MessageService'
 import { useUserStore } from 'src/stores/UserStore'
 import { debounce } from 'quasar'
@@ -33,6 +33,9 @@ const messages = computed<Message[]>(() => {
   if (searchStore.searchedMessages.length) {
     return searchStore.searchedMessages
   }
+  nextTick(() => {
+    scrollBottom()
+  })
   return [...[...messageStore.messages].reverse(), ...oldMessages.value]
 })
 
