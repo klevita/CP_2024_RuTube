@@ -26,16 +26,21 @@ const messageStore = useMessageStore()
 const oldMessages = ref<Message[]>([])
 let oldMessagesOffset = 0
 const oldMessagesLoading = ref(false)
+let lastMessagesLength = 0
 
 const searchStore = useSearchStore()
 
 const messages = computed<Message[]>(() => {
-  if (searchStore.searchedMessages.length) {
+  if (lastMessagesLength !== searchStore.searchedMessages.length) {
+    nextTick(() => {
+      scrollBottom()
+    })
+  }
+  lastMessagesLength = searchStore.searchedMessages.length
+  if (lastMessagesLength) {
     return searchStore.searchedMessages
   }
-  nextTick(() => {
-    scrollBottom()
-  })
+
   return [...[...messageStore.messages].reverse(), ...oldMessages.value]
 })
 

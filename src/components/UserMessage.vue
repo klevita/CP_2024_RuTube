@@ -4,17 +4,20 @@
       <q-icon
         color="rgb(210, 210, 210)"
         :name="
-          props.user.name !== 'admin' ? 'person_outline' : symRoundedNeurology
+          setIcon()
         "
         size="40px"
       />
-      <div class="user-message__thumbs" v-if="userStore.user.username !== props.user.name && userStore.user.username !== 'admin'">
-        <q-btn :flat="!like" class="q-mb-xs" dense round color="positive" @click="like=!like; dislike = false">
-          <q-icon size="24px" :name="symRoundedThumbUp" />
-        </q-btn>
-        <q-btn :flat="!dislike" dense round color="negative" @click="dislike=!dislike; like=false">
-          <q-icon size="24px" :name="symRoundedThumbDown" />
-        </q-btn>
+      <div class="user-message__thumbs" >
+        <template v-if="userStore.user.username !== props.user.name && userStore.user.username !== 'admin'">
+          <q-btn :flat="!like" class="q-mb-xs" dense round color="positive" @click="like=!like; dislike = false">
+            <q-icon size="24px" :name="symRoundedThumbUp" />
+          </q-btn>
+          <q-btn :flat="!dislike" dense round color="negative" @click="dislike=!dislike; like=false">
+            <q-icon size="24px" :name="symRoundedThumbDown" />
+          </q-btn>
+        </template>
+        <q-btn v-if="props.user.name==='llm'" :icon="symRoundedCopyAll" round dense size="md" class="q-mt-sm" flat @click="copyText()" />
       </div>
       <div class="user-message__content" :style="{alignItems: reverse?'end':'start'}">
         <div class="q-mx-md q-mb-xs text-grey-8" :style="{textAlign: reverse?'right': 'start'}">
@@ -42,13 +45,26 @@
   </div>
 </template>
 <script setup lang="ts">
-import { symRoundedNeurology, symRoundedThumbUp, symRoundedThumbDown } from '@quasar/extras/material-symbols-rounded'
+import { symRoundedSupportAgent, symRoundedNeurology, symRoundedPerson, symRoundedThumbUp, symRoundedThumbDown, symRoundedCopyAll } from '@quasar/extras/material-symbols-rounded'
 import { Message } from 'src/stores/MessageStore'
 import { MdPreview, config } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import ru from '@vavt/cm-extension/dist/locale/ru'
 import { onMounted, ref } from 'vue'
 import { useUserStore } from 'src/stores/UserStore'
+import { useTextStore } from 'src/stores/copyTextStore'
+
+const textStore = useTextStore()
+
+function setIcon () {
+  if (props.user.name === 'admin') {
+    return symRoundedSupportAgent
+  }
+  if (props.user.name === 'llm') {
+    return symRoundedNeurology
+  }
+  return symRoundedPerson
+}
 
 config({
   editorConfig: {
@@ -59,6 +75,7 @@ config({
 })
 
 const userStore = useUserStore()
+const emit = defineEmits(['textCopy'])
 
 const like = ref(false)
 const dislike = ref(false)
@@ -81,6 +98,11 @@ const formatMessageText = () => {
 
 function handleRefClick (url: string) {
   window.open(url, '_blank')
+}
+
+function copyText () {
+  navigator.clipboard.writeText(props.text)
+  textStore.copyText = props.text
 }
 
 onMounted(() => {

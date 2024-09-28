@@ -62,6 +62,7 @@ import { MdEditor, config } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import ru from '@vavt/cm-extension/dist/locale/ru'
 import { StoreDefinition } from 'pinia'
+import { useTextStore } from 'src/stores/copyTextStore'
 
 const focused = ref(false)
 
@@ -107,7 +108,7 @@ async function send () {
     setTimeout(() => {
       model.value = ''
       prompt.value = undefined
-    }, 1)
+    }, 200)
   }
 }
 
@@ -131,6 +132,8 @@ const formattedSearch = computed(() => {
   }
   return str
 })
+const store = props.store()
+const textStore = useTextStore()
 
 const searchHandle = async (v: string) => {
   const resp = await spellcheck(v)
@@ -163,6 +166,15 @@ const inputHeight = computed(() => {
     return '400px'
   }
   return '108px'
+})
+
+watch(() => textStore.copyText, () => {
+  if (store.$id === 'messages') {
+    const text = textStore.getText
+    if (text) {
+      model.value = text
+    }
+  }
 })
 
 watch(model, (v: string) => {
@@ -242,6 +254,10 @@ watch(model, (v: string) => {
   &:hover {
     text-decoration: underline;
   }
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 90%;
 }
 
 .category {
