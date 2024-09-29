@@ -12,7 +12,7 @@ export interface Message {
   user: {
     id: number,
     name: string
-}
+  }
 }
 
 export const useMessageStore = defineStore('messages', {

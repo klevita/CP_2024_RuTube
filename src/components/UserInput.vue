@@ -28,6 +28,21 @@
           class="mark-editor-wrapper__btn-expand__icon"
         />
     </q-btn>
+    <q-btn
+        ref="btn"
+        @click="model = ''"
+        flat
+        color="rgb(63, 74, 84)"
+        class="mark-editor-wrapper__btn-delete"
+        padding="0 4px 0 4px"
+      >
+        <q-icon
+          :name="symRoundedDelete"
+          :class="{'rotate-180': extended}"
+          size="24px"
+          class="mark-editor-wrapper__btn-delete__icon"
+        />
+    </q-btn>
     <transition
       appear
       enter-active-class="animated fadeIn"
@@ -53,7 +68,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { symRoundedSend, symRoundedKeyboardArrowUp } from '@quasar/extras/material-symbols-rounded'
+import { symRoundedSend, symRoundedKeyboardArrowUp, symRoundedDelete } from '@quasar/extras/material-symbols-rounded'
 import { QBtn, debounce } from 'quasar'
 import { MessageService } from 'src/api/services/MessageService'
 import { spellcheck } from 'src/api/services/SpellCheck'
@@ -231,6 +246,11 @@ watch(model, (v: string) => {
   &__btn-expand {
     position: absolute;
     right: 84px;
+    top: 6px;
+  }
+  &__btn-delete {
+    position: absolute;
+    right: 114px;
     top: 6px;
   }
 }

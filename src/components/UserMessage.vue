@@ -10,7 +10,7 @@
       />
       <div class="user-message__thumbs" >
         <template v-if="userStore.user.username !== props.user.name && userStore.user.username !== 'admin'">
-          <q-btn :flat="!like" class="q-mb-xs" dense round color="positive" @click="like=!like; dislike = false">
+          <q-btn :flat="!like" class="q-mb-xs" dense round color="positive" @click="setLike()">
             <q-icon size="24px" :name="symRoundedThumbUp" />
           </q-btn>
         </template>
@@ -54,6 +54,7 @@ import ru from '@vavt/cm-extension/dist/locale/ru'
 import { onMounted, ref } from 'vue'
 import { useUserStore } from 'src/stores/UserStore'
 import { useTextStore } from 'src/stores/copyTextStore'
+import { useStorage } from '@vueuse/core'
 
 const textStore = useTextStore()
 
@@ -78,7 +79,7 @@ config({
 const userStore = useUserStore()
 
 const like = ref(false)
-const dislike = ref(false)
+const likes = useStorage('likes', [] as number[])
 
 const preview = ref<HTMLDivElement>()
 
@@ -105,6 +106,13 @@ function copyText (text?:string) {
   textStore.copyText = text || props.text
 }
 
+function setLike () {
+  like.value = true
+  if (!likes.value.includes(props.id) && likes.value) {
+    likes.value.push(props.id)
+  }
+}
+
 onMounted(() => {
   const links = preview.value?.querySelectorAll('a') as HTMLLinkElement[] | undefined
   links?.forEach((link) => {
@@ -114,6 +122,9 @@ onMounted(() => {
       link.replaceWith(img)
     }
   })
+  if (likes.value.includes(props.id)) {
+    like.value = true
+  }
 })
 
 const props = defineProps<Message & { reverse?: boolean, refs: string[] | null }>()
