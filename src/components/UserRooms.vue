@@ -21,7 +21,7 @@
     </q-item>
   </q-list>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// Компонент всех добавленных комнат, по нажатию на комнату происходит установка значений в сторах для работы с комнатой
 import { MessageService, Room } from 'src/api/services/MessageService'
 import { useMessageStore } from 'src/stores/MessageStore'
 import { useModelMessageStore } from 'src/stores/ModelMessageStore'

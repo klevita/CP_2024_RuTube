@@ -12,7 +12,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// сгруппированные сообщения с чат ботом, отдельная комната заведена для них, как и отдельный стор
 import UserMessage from './UserMessage.vue'
 import UserMessageSkeleton from './UserMessageSkeleton.vue'
 import { Message } from 'src/stores/MessageStore'

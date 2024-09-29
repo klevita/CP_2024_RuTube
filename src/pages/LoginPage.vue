@@ -29,7 +29,7 @@
     </div>
   </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup>// Страница входа, используется простая авторизация с хранением ключей в localstorage
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import svgLogo from 'assets/svg/rutube.svg'
 import { useUserStore } from 'stores/UserStore'

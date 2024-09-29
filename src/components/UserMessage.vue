@@ -45,7 +45,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// Одно из сообщений пользователя\бота\админа. Много логики для работы маркдауна и много стилей для корректного отображения
 import { symRoundedSupportAgent, symRoundedNeurology, symRoundedPerson, symRoundedThumbUp, symRoundedCopyAll } from '@quasar/extras/material-symbols-rounded'
 import { Message } from 'src/stores/MessageStore'
 import { MdPreview, config } from 'md-editor-v3'

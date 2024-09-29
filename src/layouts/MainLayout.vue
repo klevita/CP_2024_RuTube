@@ -50,7 +50,8 @@
     </q-page-container>
   </q-layout>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// лайаут для всех страниц кроме pageNotFound, является просто обёрткой со всякими выпадающими окнами и headeR
+// взаимодействие происходит только с поиском
 import { useMessageStore } from 'src/stores/MessageStore'
 import { symRoundedNeurology, symRoundedMenu, symRoundedClose } from '@quasar/extras/material-symbols-rounded'
 import svgLogo from 'assets/svg/rutube.svg'

@@ -1,7 +1,7 @@
 <template>
   <div></div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// Страница для тг бота, просто устанавливает все необходимые сторы и редиректит
 import { MessageService } from 'src/api/services/MessageService'
 import { useMessageStore } from 'src/stores/MessageStore'
 import { useUserStore } from 'src/stores/UserStore'

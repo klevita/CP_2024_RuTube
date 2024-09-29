@@ -9,7 +9,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// просто сгруппированные сообщения в комнате, реализована дозагрузка сообщений при прокручивании и поиск
 import UserMessage from './UserMessage.vue'
 import { Message, useMessageStore } from 'src/stores/MessageStore'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'

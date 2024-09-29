@@ -3,7 +3,7 @@
     <MdPreview class="admin-page__content" :modelValue="text" language="ru"/>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// Админская страница, пустая
 import { MdPreview, config } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import ru from '@vavt/cm-extension/dist/locale/ru'

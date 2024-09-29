@@ -6,7 +6,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// Страница для пользователя provider
 import UserChat from 'src/components/UserChat.vue'
 import UserInput from 'src/components/UserInput.vue'
 import { useMessageStore } from 'src/stores/MessageStore'

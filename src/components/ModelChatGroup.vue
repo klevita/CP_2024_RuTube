@@ -6,7 +6,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// Компонент как UserPage, только для боковой панели, небольшие отличия
 import ModelChat from './ModelChat.vue'
 import UserInput from 'src/components/UserInput.vue'
 import { useModelMessageStore } from 'src/stores/ModelMessageStore'
