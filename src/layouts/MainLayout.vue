@@ -62,20 +62,21 @@ import svgLogo from 'assets/svg/rutube.svg'
 import { useUserStore } from 'src/stores/UserStore'
 import UserRooms from 'src/components/UserRooms.vue'
 import { useRouter } from 'vue-router'
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import { useSearchStore } from 'src/stores/searchStore'
 import { debounce, Screen } from 'quasar'
 import ModelChatGroup from 'src/components/ModelChatGroup.vue'
 import { useRoomsStore } from 'src/stores/RoomsStore'
 
 const roomsStore = useRoomsStore()
+const userStore = useUserStore()
 
 const router = useRouter()
 const store = useUserStore()
 const messageStore = useMessageStore()
-const drawerOpened = ref(true)
+const drawerOpened = ref(false)
 
-const chatOpened = ref(true)
+const chatOpened = ref()
 
 const searchStore = useSearchStore()
 const search = ref('')
@@ -102,6 +103,10 @@ async function handleClick () {
   await router.push({ name: 'Login' })
   location.reload()
 }
+
+onBeforeMount(() => {
+  chatOpened.value = userStore.user.username === 'admin'
+})
 
 watch(() => store.user.username, (name) => {
   if (name !== 'admin') {

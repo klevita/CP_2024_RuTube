@@ -257,6 +257,10 @@ watch(model, (v: string) => {
 
 :deep(.cm-content *){
   color: black !important;
+
+}
+:deep(p){
+    color: black !important;
 }
 :deep(.cm-placeholder){
   font-size: 20px;
