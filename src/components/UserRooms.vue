@@ -10,7 +10,7 @@
             </template>
           </q-input>
     </div>
-    <q-item class="rooms__room" :class="{'rooms__room-selected': messageStore.currentRoomId === room.id}" @click="changeRoom(room.id, room.assistant_room_id)" clickable v-ripple="{color: 'background2'}" v-for="room in searchedRooms" :key="room.id">
+    <q-item class="rooms__room" :class="{'rooms__room-selected': messageStore.currentRoomId === room.id}" @click="roomsStore.changeRoom(room.id, room.assistant_room_id);router.push('/user')" clickable v-ripple="{color: 'background2'}" v-for="room in searchedRooms" :key="room.id">
       {{ room.name }}
       <div class="column q-ml-sm items-center">
         <q-icon v-if="room.human_need" color="negative" class="q-mb-xs" size="20px" name="help_outline" />
@@ -22,19 +22,18 @@
   </q-list>
 </template>
 <script setup lang="ts">// Компонент всех добавленных комнат, по нажатию на комнату происходит установка значений в сторах для работы с комнатой
-import { MessageService, Room } from 'src/api/services/MessageService'
+import { MessageService } from 'src/api/services/MessageService'
 import { useMessageStore } from 'src/stores/MessageStore'
-import { useModelMessageStore } from 'src/stores/ModelMessageStore'
+import { useRoomsStore } from 'src/stores/RoomsStore'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const messageStore = useMessageStore()
-const ModelMessageStore = useModelMessageStore()
-
-const rooms = ref<Room[]>([])
 const router = useRouter()
+const messageStore = useMessageStore()
+
+const roomsStore = useRoomsStore()
 const searchedRooms = computed(() => {
-  return rooms.value.filter((room) => {
+  return roomsStore.rooms.filter((room) => {
     return room.name.toLowerCase().includes(search.value.trim().toLowerCase())
   }).sort((room1, room2) => {
     if (room1.human_need) {
@@ -62,22 +61,15 @@ const searchIconColor = computed(() => {
 })
 
 onMounted(async () => {
-  rooms.value = await MessageService.getRooms()
+  roomsStore.rooms = await MessageService.getRooms()
   setInterval(async () => {
-    rooms.value = await MessageService.getRooms()
+    roomsStore.rooms = await MessageService.getRooms()
   }, 3000)
 })
 
-function changeRoom (id: number, modelId: number | null) {
-  router.push({ name: 'User' })
-  messageStore.changeRoom(id)
-  if (modelId) {
-    ModelMessageStore.changeRoom(modelId)
-  }
-}
 async function handleDelete (id: number) {
   await MessageService.deleteRoom(id)
-  rooms.value = await MessageService.getRooms()
+  roomsStore.rooms = await MessageService.getRooms()
 }
 </script>
 <style scoped lang="scss">

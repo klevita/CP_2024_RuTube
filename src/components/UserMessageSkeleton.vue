@@ -27,7 +27,7 @@
     <q-space />
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// Просто обёртка для ответа бота
 import { symRoundedNeurology } from '@quasar/extras/material-symbols-rounded'
 
 </script>

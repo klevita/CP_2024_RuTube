@@ -7,6 +7,10 @@
             color="white" padding="xs" flat>
             <q-icon :name="symRoundedMenu" size="28px" />
           </q-btn>
+          <q-btn @click="roomsStore.setFirstRoom" v-if="store.user.username === 'admin'" class="q-mr-md"
+            color="white" padding="xs" flat>
+            <q-icon :name="symRoundedSkipNext" size="28px" />
+          </q-btn>
           <div v-else style="width:48px"></div>
             <div v-if="Screen.width > 700" class="logo">
               <svg-logo />
@@ -53,7 +57,7 @@
 <script setup lang="ts">// лайаут для всех страниц кроме pageNotFound, является просто обёрткой со всякими выпадающими окнами и headeR
 // взаимодействие происходит только с поиском
 import { useMessageStore } from 'src/stores/MessageStore'
-import { symRoundedNeurology, symRoundedMenu, symRoundedClose } from '@quasar/extras/material-symbols-rounded'
+import { symRoundedNeurology, symRoundedMenu, symRoundedClose, symRoundedSkipNext } from '@quasar/extras/material-symbols-rounded'
 import svgLogo from 'assets/svg/rutube.svg'
 import { useUserStore } from 'src/stores/UserStore'
 import UserRooms from 'src/components/UserRooms.vue'
@@ -62,13 +66,16 @@ import { computed, ref, watch } from 'vue'
 import { useSearchStore } from 'src/stores/searchStore'
 import { debounce, Screen } from 'quasar'
 import ModelChatGroup from 'src/components/ModelChatGroup.vue'
+import { useRoomsStore } from 'src/stores/RoomsStore'
+
+const roomsStore = useRoomsStore()
 
 const router = useRouter()
 const store = useUserStore()
 const messageStore = useMessageStore()
 const drawerOpened = ref(true)
 
-const chatOpened = ref(false)
+const chatOpened = ref(true)
 
 const searchStore = useSearchStore()
 const search = ref('')

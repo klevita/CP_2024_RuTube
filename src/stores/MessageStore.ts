@@ -12,7 +12,7 @@ export interface Message {
   user: {
     id: number,
     name: string
-  }
+}
 }
 
 export const useMessageStore = defineStore('messages', {
@@ -37,7 +37,12 @@ export const useMessageStore = defineStore('messages', {
       }
     },
     addMessage (newMessage: Message) {
-      this.messages.push(newMessage)
+      const message = this.messages.find((message) => message.id === newMessage.id)
+      if (message) {
+        message.text = newMessage.text
+      } else {
+        this.messages.push(newMessage)
+      }
     },
     changeRoom (id: number) {
       this.messages = []

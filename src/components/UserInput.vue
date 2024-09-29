@@ -67,7 +67,7 @@
     </transition>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">// поле для ввода сообщения, много стилей для красоты и отправка сообщений в комнату
 import { symRoundedSend, symRoundedKeyboardArrowUp, symRoundedDelete } from '@quasar/extras/material-symbols-rounded'
 import { QBtn, debounce } from 'quasar'
 import { MessageService } from 'src/api/services/MessageService'
